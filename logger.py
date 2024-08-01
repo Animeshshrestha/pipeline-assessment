@@ -1,14 +1,18 @@
+from __future__ import annotations
+
 import logging
 import os
 from datetime import datetime
 
 from config import settings
 
+
 class Logger:
     """
     General Logger class to save the log to the desired folder
     with time as file name
     """
+
     def __init__(self):
         self.log_dir = settings.LOGGING_DIR
         self.logger = logging.getLogger(__name__)
@@ -36,7 +40,9 @@ class Logger:
             # File handler
             file_handler = logging.FileHandler(self.log_file)
             file_handler.setLevel(logging.DEBUG)
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            formatter = logging.Formatter(
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            )
             file_handler.setFormatter(formatter)
             self.logger.addHandler(file_handler)
 
@@ -48,5 +54,6 @@ class Logger:
 
     def get_logger(self):
         return self.logger
-    
+
+
 logger = Logger()

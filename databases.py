@@ -1,31 +1,37 @@
-from dataclasses import asdict
-from typing import List, Dict, Any, Union
+from __future__ import annotations
 
-from pymongo import MongoClient, UpdateOne
+from dataclasses import asdict
+from typing import Any
+
+from pymongo import MongoClient
+from pymongo import UpdateOne
 from pymongo.collection import Collection
 
-from config  import settings
+from config import settings
+
 
 class MongoDBHandler:
 
     def __init__(self):
-        self.client = MongoClient(settings.MONGO_DB_HOST, settings.MONGO_DB_PORT)
+        self.client = MongoClient(
+            settings.MONGO_DB_HOST, settings.MONGO_DB_PORT,
+        )
         self.db = self.client[settings.MONGO_DB_NAME]
         self.collection = self.db[settings.MONGO_DB_COLLECTION_NAME]
-    
+
     def get_collection(self) -> Collection:
         """
         Return the collection
         """
         return self.collection
-    
-    def get_all_data(self) -> Union[List[Dict[str, Any]], List[None]]:
+
+    def get_all_data(self) -> list[dict[str, Any]] | list[None]:
         """
         Return all the data from collection
         """
         return list(self.collection.find({}))
-    
-    def insert_data_operations(self, unique_data: List[Any]) -> None:
+
+    def insert_data_operations(self, unique_data: list[Any]) -> None:
         """
         This function performs the following operations:
           1. Iterates through each unique host data.
@@ -42,11 +48,23 @@ class MongoDBHandler:
             if existing_host:
                 existing_updated = existing_host.get('updated')
                 if existing_updated and host.updated > existing_updated:
-                    operations.append(UpdateOne({'host_id': host.host_id}, {'$set': host_dict}))
+                    operations.append(
+                        UpdateOne(
+                            {'host_id': host.host_id},
+                            {'$set': host_dict},
+                        ),
+                    )
             else:
-                operations.append(UpdateOne({'host_id': host.host_id}, {'$set': host_dict}, upsert=True))
-        
+                operations.append(
+                    UpdateOne(
+                        {'host_id': host.host_id}, {
+                            '$set': host_dict,
+                        }, upsert=True,
+                    ),
+                )
+
         if operations:
             self.collection.bulk_write(operations)
+
 
 mongo_db = MongoDBHandler()
