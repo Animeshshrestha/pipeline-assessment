@@ -20,13 +20,13 @@ Clone this repository to your local machine
 Create the directory structure for storing environment variables:
 
 ```bash
-  mkdir -p .env/.local/.env
+  mkdir -p .envs/.local
 ```
 
 Copy the sample environment variables file to the new directory:
 
 ```bash
-  cp .env.sample .env/.local/.env
+  cp .env.sample .envs/.local/.env
 ```
 
 Edit the .env/.local/.env file to include your specific environment variables:
