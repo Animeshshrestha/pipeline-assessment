@@ -17,7 +17,7 @@ services:
       - mongo
 
   mongo:
-    image: bitnami/mongodb:latest
+    image: mongodb/mongodb-community-server:latest
     container_name: mongo_db
     ports:
       - "27017:27017"

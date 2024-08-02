@@ -22,14 +22,12 @@ class Logger:
 
     def setup_log_directory(self):
         """
-        Created the directory based on current date and
-        file on date if directory and file does not exists.
+        Setting up log directory
         """
+        if not os.path.exists(self.log_dir):
+            os.makedirs(self.log_dir)
         current_date = datetime.now().strftime('%Y-%m-%d')
-        self.log_path = os.path.join(self.log_dir, current_date)
-        if not os.path.exists(self.log_path):
-            os.makedirs(self.log_path)
-        self.log_file = os.path.join(self.log_path, f'{current_date}.log')
+        self.log_file = os.path.join(self.log_dir, f'{current_date}.log')
 
     def setup_handlers(self):
         """
